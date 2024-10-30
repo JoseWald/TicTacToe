@@ -134,3 +134,52 @@ def restart_game():
         for col in range(BOARD_COLS):
             board[row][col]= 0
 
+draw_line()
+
+player = 1
+
+game_over = False
+
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            sys.exit()
+        if event.type == pygame.MOUSEBUTTONDOWN and not game_over:
+            mouseX = event.pos[0] // SQUARE_SIZE
+            mouseY = event.pos[1] //SQUARE_SIZE
+
+            if available_square(mouseY , mouseX):
+                make_square(mouseY , mouseX , player)
+                if check_win(player):
+                    game_over = True
+                player = player % 2 +1
+
+                if  not game_over:
+                    if best_move():
+                        if check_win(2):
+                            game_over =True
+                    player = player % 2 + 1
+                
+                if not game_over :
+                    if is_board_full():
+                        game_over = True
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_r:
+                    restart_game()
+                    game_over = False
+                    player = 1
+    if not game_over :
+        draw_figure()
+    else :
+        if check_win(1):
+            draw_figure(GREEN)
+            draw_line(GREEN)
+        elif check_win(2):
+            draw_figure(RED)
+            draw_line(RED)
+        else:
+            draw_figure(GREY)
+            draw_line(GREY)
+
+    pygame.display.update()
