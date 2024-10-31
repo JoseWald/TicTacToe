@@ -30,19 +30,23 @@ def draw_line(color=WHITE):
         pygame.draw.line( screen , color , (0 , SQUARE_SIZE*i) , (WIDTH , SQUARE_SIZE*i) , LINE_WIDTH)
         pygame.draw.line( screen , color , (SQUARE_SIZE*i , 0) , (SQUARE_SIZE*i , HEIGHT) , LINE_WIDTH)
 
+
 def draw_figure(color=WHITE):
     for row in range(BOARD_ROWS):
         for col in range(BOARD_COLS):
-            if board[row][col]== 1 :
-                pygame.draw.circle(screen , color , ( int ( col*SQUARE_SIZE + SQUARE_SIZE // 2 ) )  , (int (row * SQUARE_SIZE + SQUARE_SIZE //2 )),
-                                   CIRCLE_RADIUS ,  CIRCLE_WIDTH)
-            if board[row][col] ==2:
-                pygame.draw.line( screen , color , (col * SQUARE_SIZE // 4 , row * SQUARE_SIZE + SQUARE_SIZE //4) ,
-                                  (col*SQUARE_SIZE  + 3 *SQUARE_SIZE //4 , row*SQUARE_SIZE + 3 * SQUARE_SIZE //4)
-                                )
-                pygame.draw.line( screen , color , (col * SQUARE_SIZE // 4 , row * SQUARE_SIZE + 3*SQUARE_SIZE //4) ,
-                                  (col*SQUARE_SIZE  + 3 *SQUARE_SIZE //4 , row*SQUARE_SIZE + SQUARE_SIZE //4)
-                                )
+            if board[row][col] == 1:
+                pygame.draw.circle(screen, color, 
+                                   (int(col * SQUARE_SIZE + SQUARE_SIZE // 2), int(row * SQUARE_SIZE + SQUARE_SIZE // 2)),
+                                   CIRCLE_RADIUS, CIRCLE_WIDTH)
+            elif board[row][col] == 2:
+                pygame.draw.line(screen, color,
+                                 (col * SQUARE_SIZE + SQUARE_SIZE // 4, row * SQUARE_SIZE + SQUARE_SIZE // 4),
+                                 (col * SQUARE_SIZE + 3 * SQUARE_SIZE // 4, row * SQUARE_SIZE + 3 * SQUARE_SIZE // 4),
+                                 CROSS_WIDTH)
+                pygame.draw.line(screen, color,
+                                 (col * SQUARE_SIZE + SQUARE_SIZE // 4, row * SQUARE_SIZE + 3 * SQUARE_SIZE // 4),
+                                 (col * SQUARE_SIZE + 3 * SQUARE_SIZE // 4, row * SQUARE_SIZE + SQUARE_SIZE // 4),
+                                 CROSS_WIDTH)
 
 def make_square(row , col , player):
     board[row][col] = player
@@ -119,7 +123,7 @@ def best_move():
                 board[row][col] = 0
                 if score > best_score:
                     best_score = score
-                    move(row , col)
+                    move=(row , col)
 
             
     if move != (-1 , -1):
@@ -164,11 +168,11 @@ while True:
                     if is_board_full():
                         game_over = True
 
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_r:
-                    restart_game()
-                    game_over = False
-                    player = 1
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                restart_game()
+                game_over = False
+                player = 1
     if not game_over :
         draw_figure()
     else :
